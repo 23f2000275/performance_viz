@@ -1,87 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Employee Performance Visualization</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body {
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            margin: 40px;
-            background-color: #f8f9fa;
-            color: #333;
-        }
-        h1 {
-            color: #2c3e50;
-        }
-        .chart-container {
-            margin-top: 30px;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        }
-        footer {
-            margin-top: 60px;
-            font-size: 0.9em;
-            color: #666;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Employee Department Analysis</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      margin: 40px;
+    }
+    h1, h2 {
+      color: #2c3e50;
+    }
+    pre {
+      background-color: #1e1e1e;
+      color: #dcdcdc;
+      padding: 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    .chart-container {
+      margin-top: 40px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #777;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mpld3/0.5.9/mpld3.min.js"></script>
 </head>
 <body>
-    <h1>Employee Department Distribution</h1>
-    <p>This visualization shows the distribution of employees across departments and highlights the count for the Marketing department.</p>
-    <div>
-      # Author: 23f2000275@ds.study.iitm.ac.in
+
+  <h1>Employee Department Analysis</h1>
+
+  <h2>Python Code</h2>
+  <pre><code># Author: 23f2000275@ds.study.iitm.ac.in
 
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import mpld3
 
-# Sample employee dataset (first 10 rows for demonstration)
-from io import StringIO
+np.random.seed(42)
+departments = ['R&D', 'IT', 'Marketing', 'Sales', 'HR', 'Finance', 'Operations']
+regions = ['Middle East', 'Latin America', 'Asia Pacific', 'Africa', 'Europe', 'North America']
+num_employees = 100
 
-data = StringIO("""
-employee_id,department,region,performance_score,years_experience,satisfaction_rating
-EMP001,R&D,Middle East,83.73,14,5
-EMP002,R&D,Latin America,87.82,12,4.7
-EMP003,IT,Middle East,84.86,4,4.1
-EMP004,IT,Africa,76.63,1,3
-EMP005,R&D,Asia Pacific,65.75,14,3.9
-EMP006,Marketing,Europe,78.12,6,4.5
-EMP007,Marketing,Europe,80.25,7,4.6
-EMP008,Marketing,North America,72.30,3,3.8
-EMP009,Sales,Asia Pacific,90.50,11,4.9
-EMP010,Sales,Latin America,88.10,9,4.2
-""")
+data = {
+    'employee_id': [f'EMP{str(i).zfill(3)}' for i in range(1, num_employees + 1)],
+    'department': np.random.choice(departments, size=num_employees, p=[0.2, 0.15, 0.2, 0.2, 0.1, 0.1, 0.05]),
+    'region': np.random.choice(regions, size=num_employees),
+    'performance_score': np.round(np.random.normal(loc=75, scale=10, size=num_employees), 2),
+    'years_experience': np.random.randint(1, 31, size=num_employees),
+    'satisfaction_rating': np.round(np.random.uniform(2.5, 5.0, size=num_employees), 1),
+}
 
-# Load the dataset
-df = pd.read_csv(data)
+df = pd.DataFrame(data)
 
-# Calculate frequency count for the "Marketing" department
+# Frequency count for Marketing
 marketing_count = (df['department'] == 'Marketing').sum()
-print(f'Frequency count for "Marketing" Department: {marketing_count}')
+print(f"Marketing department employee count: {marketing_count}")
 
-# Create histogram of department distribution
+# Chart
 plt.figure(figsize=(8, 5))
-sns.countplot(data=df, x='department', palette='Set2')
-plt.title('Department Distribution of Employees')
+sns.countplot(data=df, x='department', palette='pastel', order=df['department'].value_counts().index)
+plt.title('Employee Count by Department')
 plt.xlabel('Department')
-plt.ylabel('Count')
+plt.ylabel('Number of Employees')
 plt.xticks(rotation=45)
 plt.tight_layout()
-plt.savefig("chart-llm.png", bbox_inches='tight')
-plt.close()
-    </div>
+mpld3.show()</code></pre>
 
-    <div class="chart-container">
-        <h2>Outputs</h2>
-        <p>Frequency count for "Marketing" Department: 16</p>
-        <img src="chart_llm.png" width="400">
-    </div>
+  <div class="chart-container">
+    <h2>Interactive Chart</h2>
+   
 
-    <footer>
-        Created by 23f2000275@ds.study.iitm.ac.in
-    </footer>
+<style>
+
+</style>
+
+<div id="fig_el9995090eb73-0704-42fe-8af4-5f1a5cb87f108554198104"></div>
+<script>
+function mpld3_load_lib(url, callback){
+  var s = document.createElement('script');
+  s.src = url;
+  s.async = true;
+  s.onreadystatechange = s.onload = callback;
+  s.onerror = function(){console.warn("failed to load library " + url);};
+  document.getElementsByTagName("head")[0].appendChild(s);
+}
+
+if(typeof(mpld3) !== "undefined" && mpld3._mpld3IsLoaded){
+   // already loaded: just create the figure
+   !function(mpld3){
+       
+       mpld3.draw_figure("fig_el9995090eb73-0704-42fe-8af4-5f1a5cb87f108554198104", {"width": 640.0, "height": 480.0, "axes": [], "data": {}, "id": "el9995090eb73-0704-42fe-8af4-5f1a5cb87f10", "plugins": [{"type": "reset"}, {"type": "zoom", "button": true, "enabled": false}, {"type": "boxzoom", "button": true, "enabled": false}]});
+   }(mpld3);
+}else if(typeof define === "function" && define.amd){
+   // require.js is available: use it to load d3/mpld3
+   require.config({paths: {d3: "https://d3js.org/d3.v5"}});
+   require(["d3"], function(d3){
+      window.d3 = d3;
+      mpld3_load_lib("https://mpld3.github.io/js/mpld3.v0.5.11.js", function(){
+         
+         mpld3.draw_figure("fig_el9995090eb73-0704-42fe-8af4-5f1a5cb87f108554198104", {"width": 640.0, "height": 480.0, "axes": [], "data": {}, "id": "el9995090eb73-0704-42fe-8af4-5f1a5cb87f10", "plugins": [{"type": "reset"}, {"type": "zoom", "button": true, "enabled": false}, {"type": "boxzoom", "button": true, "enabled": false}]});
+      });
+    });
+}else{
+    // require.js not available: dynamically load d3 & mpld3
+    mpld3_load_lib("https://d3js.org/d3.v5.js", function(){
+         mpld3_load_lib("https://mpld3.github.io/js/mpld3.v0.5.11.js", function(){
+                 
+                 mpld3.draw_figure("fig_el9995090eb73-0704-42fe-8af4-5f1a5cb87f108554198104", {"width": 640.0, "height": 480.0, "axes": [], "data": {}, "id": "el9995090eb73-0704-42fe-8af4-5f1a5cb87f10", "plugins": [{"type": "reset"}, {"type": "zoom", "button": true, "enabled": false}, {"type": "boxzoom", "button": true, "enabled": false}]});
+            })
+         });
+}
+</script>
+  </div>
+
+  <footer>
+    Created by 23f2000275@ds.study.iitm.ac.in
+  </footer>
 </body>
 </html>
