@@ -60,7 +60,7 @@ df = pd.read_csv(data)
 
 # Calculate frequency count for the "Marketing" department
 marketing_count = (df['department'] == 'Marketing').sum()
-print(f"Marketing department employee count: {marketing_count}")
+print(f'Frequency count for "Marketing" Department: {marketing_count}')
 
 # Create histogram of department distribution
 plt.figure(figsize=(8, 5))
@@ -76,7 +76,7 @@ plt.close()
 
     <div class="chart-container">
         <h2>Outputs</h2>
-        <p>Marketing department employee count: 3</p>
+        <p>Frequency count for "Marketing" Department: 3</p>
         <img src="chart_llm.png" width="400">
     </div>
 
